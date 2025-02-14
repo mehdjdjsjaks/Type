@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تمرین تایپ با زمان</title>
+    <link rel="stylesheet" href="style.css">  <!-- اینجا فایل style.css رو اضافه کردیم -->
+</head>
+<body>
+    <h1>تمرین تایپ با زمان</h1>
+    <h1>کلمه را تایپ کن قبل از اینکه زمان تمام بشه</h1>
+    <p id="word"></p>
+    <input type="text" id="input" oninput="checkTyping()">
+    <p id="timer"></p>
+    <p id="result"></p>
+    <p>امتیاز: <span id="score">0</span></p>
+    <button id="restart" onclick="restartGame()" style="display: none;">بازی مجدد</button>
+
+    <script>
+        let words = ["سلام", "دنیا", "کتاب", "ماشین", "مدرسه", "hello", "کوه", "بازی", "دوست", "برنامه"];
+        let score = 0;
+        let time = 3;
+        let timer;
+        let currentWord = "";
+
+        function newWord() {
+            currentWord = words[Math.floor(Math.random() * words.length)];
+            document.getElementById("word").innerText = currentWord;
+            document.getElementById("input").value = "";
+            resetTimer();
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            time = 3;
+            document.getElementById("timer").innerText = "زمان: " + time + " ثانیه";
+            timer = setInterval(() => {
+                time--;
+                document.getElementById("timer").innerText = "زمان: " + time + " ثانیه";
+                if (time === 0) {
+                    clearInterval(timer);
+                    document.getElementById("result").innerText = "باختی! زمان تمام شد.";
+                    document.getElementById("input").disabled = true;
+                    document.getElementById("restart").style.display = "block"; // نمایش دکمه بازی مجدد
+                }
+            }, 1000);
+        }
+
+        function checkTyping() {
+            let input = document.getElementById("input").value;
+            if (input === currentWord) {
+                score++;
+                document.getElementById("score").innerText = score;
+                newWord();
+            }
+        }
+
+        function restartGame() {
+            score = 0;
+            document.getElementById("score").innerText = score;
+            document.getElementById("result").innerText = "";
+            document.getElementById("input").disabled = false;
+            document.getElementById("restart").style.display = "none"; // مخفی کردن دکمه بازی مجدد
+            newWord();
+        }
+
+        newWord();
+    </script>
+</body>
+</html>
